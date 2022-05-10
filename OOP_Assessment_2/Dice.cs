@@ -59,6 +59,7 @@ namespace OOP_Assessment_2
                 _dicearr[i].RollDie();
             }
         }
+
         public int[] ReturnDiceVals()
         {
             int[] vals = new int[5];
@@ -66,7 +67,39 @@ namespace OOP_Assessment_2
             {
                 vals[i] = _dicearr[i].Number;
             }
+
             return vals;
+        }
+        public int GenerateScore()
+        {
+            int[] numAmmounts = new int[6];
+            for (int i = 0; i < 6; i++)
+            {
+                numAmmounts[i] = _dicearr.Count(s => s.Number == i);
+            }
+            int tempScore = 0;
+            if (numAmmounts.Max() == 5)
+            {
+                tempScore = 12;
+            }
+            else if (numAmmounts.Max() == 4)
+            {
+                tempScore = 6;
+            }
+            else if (numAmmounts.Max() == 3)
+            {
+                tempScore = 3;
+            }
+            return tempScore;
+        }
+        public bool RethrowQuery()
+        {
+            int[] numAmmounts = new int[6];
+            for (int i = 0; i < 6; i++)
+            {
+                numAmmounts[i] = _dicearr.Count(s => s.Number == i);
+            }
+            return numAmmounts.Max() == 2;
         }
     }
 }
