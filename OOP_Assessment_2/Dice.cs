@@ -45,11 +45,22 @@ namespace OOP_Assessment_2
     {
         private Die[] _dicearr = new Die[5];
         public readonly int NumberOfDice = 5;
-        public Dice(int sides)
+        private int _sides;
+        public int Sides
         {
+            get { return _sides; }
+            set
+            {
+                int[] validSideNumbers = { 4, 6, 8, 10, 12, 20 };
+                _sides = validSideNumbers.Contains(value) ? value : 6;
+            }
+        }
+        public Dice(int tempSides)
+        {
+            Sides = tempSides;
             for (int i = 0; i < 5; i++)
             {
-                _dicearr[i] = new Die(sides);
+                _dicearr[i] = new Die(tempSides);
             }
         }
         public void RollDice()
@@ -59,7 +70,13 @@ namespace OOP_Assessment_2
                 _dicearr[i].RollDie();
             }
         }
-
+        public void ResetDice()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                _dicearr[i].ResetDie();
+            }
+        }
         public int[] ReturnDiceVals()
         {
             int[] vals = new int[5];
@@ -72,30 +89,29 @@ namespace OOP_Assessment_2
         }
         public int GenerateScore()
         {
-            int[] numAmmounts = new int[6];
-            for (int i = 0; i < 6; i++)
+            int[] numAmmounts = new int[_sides];
+            for (int i = 0; i < _sides; i++)
             {
                 numAmmounts[i] = _dicearr.Count(s => s.Number == i);
             }
-            int tempScore = 0;
             if (numAmmounts.Max() == 5)
             {
-                tempScore = 12;
+                return 12;
             }
             else if (numAmmounts.Max() == 4)
             {
-                tempScore = 6;
+                return 6;
             }
             else if (numAmmounts.Max() == 3)
             {
-                tempScore = 3;
+                return 3;
             }
-            return tempScore;
+            return 0;
         }
         public bool RethrowQuery()
         {
-            int[] numAmmounts = new int[6];
-            for (int i = 0; i < 6; i++)
+            int[] numAmmounts = new int[_sides];
+            for (int i = 0; i < _sides; i++)
             {
                 numAmmounts[i] = _dicearr.Count(s => s.Number == i);
             }

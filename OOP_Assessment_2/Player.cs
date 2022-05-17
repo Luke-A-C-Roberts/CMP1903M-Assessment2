@@ -25,6 +25,7 @@ namespace OOP_Assessment_2
         public static HumanPlayer operator +(HumanPlayer oldHumanPlayer, int i)
         {
             HumanPlayer newHumanPlayer = new HumanPlayer();
+            newHumanPlayer.Name = oldHumanPlayer.Name;
             newHumanPlayer.Score = oldHumanPlayer.Score + i;
             return newHumanPlayer;
         }
