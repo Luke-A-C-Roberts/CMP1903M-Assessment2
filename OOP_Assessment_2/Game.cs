@@ -1,15 +1,21 @@
 namespace OOP_Assessment_2
 {
+    //Game setup and loop
     public class Game
     {
         public static void Play()
         {
+            /*
+             * object instantiation of game,
+             * player, UI and Dice objects;
+             */
             GameUI gameuiObj = new GameUI();
             HumanPlayer humanPlayerObj = new HumanPlayer();
             AIPlayer aiPlayerObj = new AIPlayer();
-            Dice diceObj = new Dice(gameuiObj.AskDiceNum());
-
+            //human player name assigned
             humanPlayerObj.Name = gameuiObj.AskUserName();
+            //number of dice asked for
+            Dice diceObj = new Dice(gameuiObj.AskDiceNum());
 
             bool quitGame = false;
 
@@ -19,6 +25,11 @@ namespace OOP_Assessment_2
             {
                 // players go
                 diceObj.ResetDice();
+                /*
+                 * player can either choose to
+                 * roll the dice or quit the
+                 * game.
+                 */
                 quitGame = gameuiObj.RollMessage(humanPlayerObj.Name,false);
                 if (quitGame) { break; }
                 diceObj.RollDice(); //rolls dice
@@ -29,6 +40,11 @@ namespace OOP_Assessment_2
                 if (diceObj.RethrowQuery())
                 {
                     diceObj.ResetDice();
+                    /*
+                     * player can either choose to
+                     * roll the dice or quit the
+                     * game.
+                     */
                     quitGame = gameuiObj.RollMessage(humanPlayerObj.Name,true);
                     if (quitGame) { break; }
                     diceObj.RollDice(); //rolls dice
@@ -39,6 +55,11 @@ namespace OOP_Assessment_2
                 
                 //computer go
                 diceObj.ResetDice();
+                /*
+                 * player can either choose to
+                 * roll the dice or quit the
+                 * game.
+                 */
                 quitGame = gameuiObj.RollMessage(aiPlayerObj.Name,false);
                 if (quitGame) { break; }
                 diceObj.RollDice(); //rolls dice
@@ -50,6 +71,11 @@ namespace OOP_Assessment_2
                 {
                     diceObj.ResetDice();
                     quitGame = gameuiObj.RollMessage(aiPlayerObj.Name,true);
+                    /*
+                     * player can either choose to
+                     * roll the dice or quit the
+                     * game.
+                     */
                     if (quitGame) { break; }
                     diceObj.RollDice(); //rolls dice
                     gameuiObj.DisplayDiceNums(diceObj.ReturnDiceVals(), diceObj.Sides);

@@ -1,9 +1,12 @@
-using System.Threading.Channels;
-
 namespace OOP_Assessment_2
 {
-    public class DiceRollCharater
+    /*
+     * DiceRollCharacter class, used in
+     * dice roll animation sequence.
+     */
+    public class DiceRollCharacter
     {
+        //color list
         readonly ConsoleColor[] consoleColorList =
         {
             ConsoleColor.Blue,
@@ -22,33 +25,45 @@ namespace OOP_Assessment_2
         private string _numString;
         private int _sides;
         private ConsoleColor _numColor;
+        /*
+         * random class used for picking random
+         * values.
+         */
         private Random r = new Random();
-        public DiceRollCharater(int tempSides)
+        /*
+         * multiple initializers for
+         * DiceRollCharacters with and without
+         * a predetermined value
+         */
+        public DiceRollCharacter(int tempSides)
         {
             _sides = tempSides;
             _numString = r.Next(minValue: 1, maxValue: _sides).ToString();
             _numColor = consoleColorList[r.Next(minValue: 0, maxValue: 12)];
         }
-        public DiceRollCharater(int tempNum, int tempSides)
+        public DiceRollCharacter(int tempNum, int tempSides)
         {
             _sides = tempSides;
             _numString = tempNum.ToString();
             _numColor = consoleColorList[r.Next(minValue: 0, maxValue: 12)];
         }
-        public void Randomise()
-        {
-            _numString = r.Next(minValue: 1, maxValue: _sides).ToString();
-            _numColor = consoleColorList[r.Next(minValue: 0, maxValue: 12)];
-        }
+        //prints the character with colour
         public void Printchar()
         {
             Console.ForegroundColor = _numColor;
             Console.Write($"{_numString} ");
         }
     }
-
+    /*
+     * abstract UI class used for common
+     * methods for the game and menu UIs.
+     */
     public abstract class AbsUI
     {
+        /*
+         * methods for quickly changing text
+         * colour.
+         */
         protected static void Highlight()
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -63,6 +78,11 @@ namespace OOP_Assessment_2
         {
             Console.ForegroundColor = ConsoleColor.Gray;
         }
+        /*
+         * Show Error method allows the user
+         * to read error methods without the
+         * program terminating ungracefully.
+         */
         protected static void ShowError(Exception e)
         {
             ErrorHighlight();
@@ -85,8 +105,16 @@ namespace OOP_Assessment_2
             Unhighlight();
         }
     }
+    /*
+     * Game UI class, handles IO in the Play
+     * method in the game class.
+     */
     public class GameUI : AbsUI
     {
+        /*
+         * asks the user for a name for the
+         * HumanPlayer object.
+         */
         public string AskUserName()
         {
             string name;
@@ -97,6 +125,10 @@ namespace OOP_Assessment_2
                 Highlight();
                 name = Console.ReadLine();
                 Unhighlight();
+                /*
+                 * throws an error if the
+                 * input is incorrect.
+                 */
                 if (!String.IsNullOrEmpty(name))
                 {
                     break;
@@ -109,8 +141,14 @@ namespace OOP_Assessment_2
             }
             return name;
         }
+        /*
+         * RollMessage method asks for the
+         * user to either quit the game or
+         * throw the dice.
+         */
         public bool RollMessage(string name, bool doReroll)
         {
+            // re-roll dice message
             if (doReroll)
             {
                 Highlight();
@@ -122,9 +160,10 @@ namespace OOP_Assessment_2
             Console.Write($"({name}) ");
             Unhighlight();
             Console.WriteLine("Press ENTER to roll or press q to quit");
+            //loops until correct key is pressed
+            ConsoleKeyInfo cki = new ConsoleKeyInfo();
             while (true)
             {
-                ConsoleKeyInfo cki = new ConsoleKeyInfo();
                 cki = Console.ReadKey();
                 if (cki.Key == ConsoleKey.Enter)
                 {
@@ -137,29 +176,37 @@ namespace OOP_Assessment_2
                 }
             }
         }
+        /*
+         * DisplayDiceNums Method plays an
+         * animation for dice rolls
+         */
         public void DisplayDiceNums(int[] diceVals,int sides)
         {
+            //plays a list of DiceChars to be displayed
+            List<DiceRollCharacter> DiceChars = new List<DiceRollCharacter>();
 
-            List<DiceRollCharater> DiceChars = new List<DiceRollCharater>();
-
+            //initializes each dicechar
             foreach (int i in diceVals)
             {
-                DiceRollCharater d = new DiceRollCharater(i,sides);
+                DiceRollCharacter d = new DiceRollCharacter(i,sides);
                 DiceChars.Add(d);
             }
-
+            
+            //prints randomised dice characters
             for (int i = 0; i < 20; i++)
             {
                 Console.Clear();
                 foreach (int j in diceVals)
                 {
-                    DiceRollCharater d = new DiceRollCharater(sides);
+                    DiceRollCharacter d = new DiceRollCharacter(sides);
                     d.Printchar();
                 }
                 Thread.Sleep(50);
             }
             Console.Clear();
-            foreach (DiceRollCharater d in DiceChars)
+            
+            // prints the final diceroll.
+            foreach (DiceRollCharacter d in DiceChars)
             {
                    d.Printchar();
             }
@@ -167,6 +214,7 @@ namespace OOP_Assessment_2
             Console.Write("\n");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
+        // displays the score of a player
         public void DisplayScore(int score, string name)
         {
             Highlight();
@@ -177,32 +225,44 @@ namespace OOP_Assessment_2
             Console.WriteLine($"{score}");
             Unhighlight();
         }
+        //asks how many dice are wanted to play
         public int AskDiceNum()
         {
-            string input = default;
+            string input = "";
             int num = default;
             while (true)
             {
                 Unhighlight();
                 Console.Write("how many sides of the dice would you like?\n" + 
-                              "(Accepted Values 4, 6, 8, 10, 12 and 20)\n");
+                              "(Accepted Values 2, 4, 6, 8, 10, 12 and 20)\n");
                 try
                 {
                     Highlight();
                     input = Console.ReadLine();
                     Unhighlight();
+                    // throws error if the input is empty
                     if (string.IsNullOrEmpty(input))
                     {
-                        throw new UserDefinedExceptions.NullOrEmptyInput();
+                        throw new UserDefinedException.NullOrEmptyInput();
                     }
+                    /*
+                     * converts the input to integer
+                     * which additionally throws an
+                     * error if the input is not a number
+                     */
                     num = int.Parse(input);
-                    int[] allowedSides = { 4, 6, 8, 10, 12, 20 };
+                        /*
+                         * throws an error if the value
+                         * inputted is invalid
+                         */
+                    int[] allowedSides = { 2, 4, 6, 8, 10, 12, 20 };
                     if (allowedSides.Contains(num) == false)
                     {
-                        throw new UserDefinedExceptions.IncorrectDiceNumber();
+                        throw new UserDefinedException.IncorrectDiceNumber();
                     }
                     break;
                 }
+                // error catch
                 catch (Exception e)
                 {
                     ErrorHighlight();
@@ -214,7 +274,57 @@ namespace OOP_Assessment_2
             return num;
         }
     }
-    class Menu : AbsUI
+    class MenuUI : AbsUI
     {
+        //asks the user to either play game or quit
+        public bool PlayGame()
+        {
+            string input = default;
+            while (true)
+            {
+                Console.Write("Please write ");
+                Highlight();
+                Console.Write("\"play\" ");
+                Unhighlight();
+                Console.Write("to begin game or ");
+                Highlight();
+                Console.Write("\"exit\" ");
+                Unhighlight();
+                Console.Write("to end the program. ");
+                try
+                {
+                    Highlight();
+                    input = Console.ReadLine().ToLower();
+                    Unhighlight();
+                    // throws error if the input is empty
+                    if (string.IsNullOrEmpty(input))
+                    {
+                        throw new UserDefinedException.NullOrEmptyInput();
+                    }
+                    //throws an error if the input is incorrect
+                    if (!(input == "play" 
+                          || input == "exit"))
+                    {
+                        throw new UserDefinedException.IncorrectBeginGameInput();
+                    }
+                    break;
+                }
+                //error catch
+                catch (Exception e)
+                {
+                    ErrorHighlight();
+                    Console.WriteLine("Input not valid!");
+                    ShowError(e);
+                }
+            }
+            return input == "play";
+        }
+        //end message of program
+        public static void EndMessage()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Have a good day!");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
     }
 }
