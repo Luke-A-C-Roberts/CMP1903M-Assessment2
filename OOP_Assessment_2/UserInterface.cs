@@ -1,3 +1,5 @@
+using System.Threading.Channels;
+
 namespace OOP_Assessment_2
 {
     public class DiceRollCharater
@@ -45,24 +47,25 @@ namespace OOP_Assessment_2
         }
     }
 
-    public class GameUI
+    public abstract class AbsUI
     {
-        private static void Highlight()
+        protected static void Highlight()
         {
             Console.ForegroundColor = ConsoleColor.Green;
         }
 
-        private static void ErrorHighlight()
+        protected static void ErrorHighlight()
         {
             Console.ForegroundColor = ConsoleColor.Red;
         }
 
-        private static void Unhighlight()
+        protected static void Unhighlight()
         {
             Console.ForegroundColor = ConsoleColor.Gray;
         }
-        private static void ShowError(Exception e)
+        protected static void ShowError(Exception e)
         {
+            ErrorHighlight();
             Console.WriteLine("Show Error message [y/n]");
             ConsoleKeyInfo cki = new ConsoleKeyInfo();
             while (true)
@@ -79,7 +82,11 @@ namespace OOP_Assessment_2
                     break;
                 }
             }
+            Unhighlight();
         }
+    }
+    public class GameUI : AbsUI
+    {
         public string AskUserName()
         {
             string name;
@@ -107,12 +114,12 @@ namespace OOP_Assessment_2
             if (doReroll)
             {
                 Highlight();
-                Console.WriteLine($"{name} ");
+                Console.Write($"{name} ");
                 Unhighlight();
-                Console.WriteLine("scored a double, so are able to re roll to up their score");
+                Console.WriteLine("scored a double, so they are able to re-roll to up their score");
             }
             Highlight();
-            Console.WriteLine($"({name}) ");
+            Console.Write($"({name}) ");
             Unhighlight();
             Console.WriteLine("Press ENTER to roll or press q to quit");
             while (true)
@@ -134,8 +141,7 @@ namespace OOP_Assessment_2
         {
 
             List<DiceRollCharater> DiceChars = new List<DiceRollCharater>();
-            List<DiceRollCharater> RandomDiceChars = new List<DiceRollCharater>();
-            
+
             foreach (int i in diceVals)
             {
                 DiceRollCharater d = new DiceRollCharater(i,sides);
@@ -163,10 +169,17 @@ namespace OOP_Assessment_2
         }
         public void DisplayScore(int score, string name)
         {
-            Console.WriteLine($"{name}'s score = {score}");
+            Highlight();
+            Console.Write($"{name}");
+            Unhighlight();
+            Console.Write("'s score = ");
+            Highlight();
+            Console.WriteLine($"{score}");
+            Unhighlight();
         }
         public int AskDiceNum()
         {
+            string input = default;
             int num = default;
             while (true)
             {
@@ -176,22 +189,32 @@ namespace OOP_Assessment_2
                 try
                 {
                     Highlight();
-                    num = int.Parse(Console.ReadLine());
+                    input = Console.ReadLine();
                     Unhighlight();
+                    if (string.IsNullOrEmpty(input))
+                    {
+                        throw new UserDefinedExceptions.NullOrEmptyInput();
+                    }
+                    num = int.Parse(input);
+                    int[] allowedSides = { 4, 6, 8, 10, 12, 20 };
+                    if (allowedSides.Contains(num) == false)
+                    {
+                        throw new UserDefinedExceptions.IncorrectDiceNumber();
+                    }
                     break;
                 }
-                catch (FormatException e)
+                catch (Exception e)
                 {
                     ErrorHighlight();
                     Console.WriteLine("Input Not valid");
                     ShowError(e);
+                    Unhighlight();
                 }
             }
             return num;
         }
     }
-    class Menu
+    class Menu : AbsUI
     {
-        
     }
 }

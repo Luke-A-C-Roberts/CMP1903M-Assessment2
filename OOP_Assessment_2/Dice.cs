@@ -89,11 +89,12 @@ namespace OOP_Assessment_2
         }
         public int GenerateScore()
         {
-            int[] numAmmounts = new int[_sides];
-            for (int i = 0; i < _sides; i++)
+            int[] numAmmounts = new int[_sides + 1];
+            for (int i = 0; i <= _sides; i++)
             {
                 numAmmounts[i] = _dicearr.Count(s => s.Number == i);
             }
+
             if (numAmmounts.Max() == 5)
             {
                 return 12;
