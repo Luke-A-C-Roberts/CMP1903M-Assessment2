@@ -286,7 +286,9 @@ namespace OOP_Assessment_2
             Highlight();
             Console.Write($"{name} ");
             Unhighlight();
-            Console.Write("Wins!");
+            Console.Write("Wins!\npress ENTER to continue");
+            Console.ReadLine();
+            Console.Clear();
         }
     }
     class MenuUI : AbsUI
