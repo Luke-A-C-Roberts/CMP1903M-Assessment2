@@ -9,7 +9,7 @@ namespace OOP_Assessment_2
     {
         //encapsulation of _score and _name
         private int _score;
-        private string _name;
+        private string _name = "";
         public int Score
         {
             get { return _score; }
@@ -18,7 +18,7 @@ namespace OOP_Assessment_2
         public string Name
         {
             get { return _name; }
-            set { _name = value; }
+            set { _name = (value != null ? value : ""); }
         }
         public void CreateName(string tempName)
         {
@@ -65,6 +65,7 @@ namespace OOP_Assessment_2
         {
             AIPlayer newAIPlayer = new AIPlayer();
             newAIPlayer.Score = oldAIPlayer.Score + i;
+            newAIPlayer.Name = oldAIPlayer.Name;
             return newAIPlayer;
         }
 
