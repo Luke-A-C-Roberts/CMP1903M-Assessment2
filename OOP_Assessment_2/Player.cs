@@ -20,6 +20,10 @@ namespace OOP_Assessment_2
             get { return _name; }
             set { _name = value; }
         }
+        public void CreateName(string tempName)
+        {
+            _name = tempName[0].ToString().ToUpper() + tempName[1..^0].ToLower();
+        }
     }
     public class HumanPlayer : Player
     {
@@ -49,7 +53,7 @@ namespace OOP_Assessment_2
         public AIPlayer()
         {
             Score = 0;
-            Name = "Computer";
+            Name = "";
         }
         /*
          * operation overload which adds a
@@ -62,6 +66,11 @@ namespace OOP_Assessment_2
             AIPlayer newAIPlayer = new AIPlayer();
             newAIPlayer.Score = oldAIPlayer.Score + i;
             return newAIPlayer;
+        }
+
+        public void CreateName()
+        {
+            Name = "Computer";
         }
     }
 }

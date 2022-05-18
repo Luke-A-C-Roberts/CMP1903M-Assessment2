@@ -12,8 +12,9 @@ namespace OOP_Assessment_2
             GameUI gameuiObj = new GameUI();
             HumanPlayer humanPlayerObj = new HumanPlayer();
             AIPlayer aiPlayerObj = new AIPlayer();
-            //human player name assigned
-            humanPlayerObj.Name = gameuiObj.AskUserName();
+            //player names assigned
+            humanPlayerObj.CreateName(gameuiObj.AskUserName());
+            aiPlayerObj.CreateName();
             //number of dice asked for
             Dice diceObj = new Dice(gameuiObj.AskDiceNum());
 

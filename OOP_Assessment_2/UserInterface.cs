@@ -7,7 +7,7 @@ namespace OOP_Assessment_2
     public class DiceRollCharacter
     {
         //color list
-        readonly ConsoleColor[] consoleColorList =
+        readonly ConsoleColor[] _consoleColorList =
         {
             ConsoleColor.Blue,
             ConsoleColor.Cyan,
@@ -39,13 +39,13 @@ namespace OOP_Assessment_2
         {
             _sides = tempSides;
             _numString = r.Next(minValue: 1, maxValue: _sides).ToString();
-            _numColor = consoleColorList[r.Next(minValue: 0, maxValue: 12)];
+            _numColor = _consoleColorList[r.Next(minValue: 0, maxValue: 12)];
         }
         public DiceRollCharacter(int tempNum, int tempSides)
         {
             _sides = tempSides;
             _numString = tempNum.ToString();
-            _numColor = consoleColorList[r.Next(minValue: 0, maxValue: 12)];
+            _numColor = _consoleColorList[r.Next(minValue: 0, maxValue: 12)];
         }
         //prints the character with colour
         public void Printchar()
@@ -322,9 +322,9 @@ namespace OOP_Assessment_2
         //end message of program
         public static void EndMessage()
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Highlight();
             Console.WriteLine("Have a good day!");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Unhighlight();
         }
     }
 }
