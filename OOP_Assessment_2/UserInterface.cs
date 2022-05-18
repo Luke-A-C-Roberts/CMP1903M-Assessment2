@@ -129,14 +129,22 @@ namespace OOP_Assessment_2
                  * throws an error if the
                  * input is incorrect.
                  */
-                if (!String.IsNullOrEmpty(name))
+                try
                 {
-                    break;
+                    if (!String.IsNullOrEmpty(name))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        throw new UserDefinedException.NullOrEmptyInput();
+                    }
                 }
-                else
+                catch (Exception e)
                 {
                     ErrorHighlight();
-                    Console.WriteLine("Incorrect Input! ");
+                    Console.WriteLine("Incorrect Input!");
+                    ShowError(e);
                 }
             }
             return name;
@@ -251,10 +259,10 @@ namespace OOP_Assessment_2
                      * error if the input is not a number
                      */
                     num = int.Parse(input);
-                        /*
-                         * throws an error if the value
-                         * inputted is invalid
-                         */
+                    /*
+                     * throws an error if the value
+                     * inputted is invalid
+                     */
                     int[] allowedSides = { 2, 4, 6, 8, 10, 12, 20 };
                     if (allowedSides.Contains(num) == false)
                     {

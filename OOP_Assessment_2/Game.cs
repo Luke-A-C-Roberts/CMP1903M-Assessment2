@@ -3,7 +3,7 @@ namespace OOP_Assessment_2
     //Game setup and loop
     public class Game
     {
-        public static void Play()
+        public void Play()
         {
             /*
              * object instantiation of game,

@@ -14,8 +14,8 @@ namespace OOP_Assessment_2
             // loops until the program is exited
             while (menuUIObj.PlayGame())
             {
-                // begins game
-                Game.Play();
+                Game game = new Game();
+                game.Play();
             }
             MenuUI.EndMessage();
         }
