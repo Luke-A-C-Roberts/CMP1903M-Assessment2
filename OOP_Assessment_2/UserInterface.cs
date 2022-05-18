@@ -281,6 +281,13 @@ namespace OOP_Assessment_2
             }
             return num;
         }
+        public void WinMessage(string name)
+        {
+            Highlight();
+            Console.Write($"{name} ");
+            Unhighlight();
+            Console.Write("Wins!");
+        }
     }
     class MenuUI : AbsUI
     {

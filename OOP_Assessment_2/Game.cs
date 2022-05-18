@@ -84,6 +84,14 @@ namespace OOP_Assessment_2
                     gameuiObj.DisplayScore(aiPlayerObj.Score,aiPlayerObj.Name);
                 }
             }
+            if (humanPlayerObj.Score >= 50)
+            {
+                gameuiObj.WinMessage(humanPlayerObj.Name);
+            }
+            else if (aiPlayerObj.Score >= 50)
+            {
+                gameuiObj.WinMessage(aiPlayerObj.Name);
+            }
         }
     }
 }
